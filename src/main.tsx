@@ -8,6 +8,7 @@ import Layout from "./layout/Layout";
 import { Provider } from "react-redux";
 import { store } from "./store.ts";
 import HomePage from "./pages/HomePage.tsx";
+import { loader as homePageLoader } from "./pages/HomePage.tsx";
 const theme = extendTheme({
   fonts: {
     heading: `'Rubik', sans-serif`,
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+        loader: homePageLoader,
       },
     ],
   },

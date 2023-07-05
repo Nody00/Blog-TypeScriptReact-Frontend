@@ -5,7 +5,7 @@ const HomePageHero = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsHero(true);
-    }, 2000);
+    }, 500);
   }, []);
   return (
     <ScaleFade initialScale={0.9} in={isHero}>
@@ -20,6 +20,7 @@ const HomePageHero = () => {
       <Text
         fontSize={{ base: "1rem", sm: "1.6rem", md: "1.9rem", lg: "2rem" }}
         opacity={0.6}
+        mb={"5rem"}
       >
         Share your development experience with other developers
       </Text>
