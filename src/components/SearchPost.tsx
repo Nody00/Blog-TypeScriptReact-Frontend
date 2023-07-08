@@ -1,14 +1,18 @@
-import { Flex, Text, Button } from "@chakra-ui/react";
+import { Flex, Text, Button, Link } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
 
-// interface IProps {
-//   url: string;
-//   numLikes: number;
-//   numFavourites: number;
-//   title: string;
-//   content: string;
-// }
+interface IPostData {
+  _id: string;
+  likes: number;
+  dislikes: number;
+  title: string;
+  content: string;
+  images: string[];
+  authorEmail: string;
+  author: string;
+}
 
-const SearchPost = () => {
+const SearchPost = (props: { postData: IPostData; onClose: () => void }) => {
   return (
     <Flex
       direction={"column"}
@@ -24,7 +28,7 @@ const SearchPost = () => {
         whiteSpace={"nowrap"}
         textOverflow={"ellipsis"}
       >
-        Typescript post
+        {props.postData.title}
       </Text>
       <Text
         color={"gray.500"}
@@ -33,19 +37,32 @@ const SearchPost = () => {
         whiteSpace={"nowrap"}
         textOverflow={"ellipsis"}
       >
-        The typescript compiler is crazy good...
+        {props.postData.content}
       </Text>
       <Flex alignItems={"center"} justifyContent={"flex-start"} gap={2}>
-        <Text>Icon</Text>
-        <Text>3</Text>
+        <Text>Likes:</Text>
+        <Text> {props.postData.likes}</Text>
       </Flex>
       <Flex alignItems={"center"} justifyContent={"flex-start"} gap={2} mb={2}>
-        <Text>Icon</Text>
-        <Text>3</Text>
+        <Text>Dislikes:</Text>
+        <Text> {props.postData.dislikes}</Text>
       </Flex>
-      <Button colorScheme="twitter" size={"sm"}>
-        View post
-      </Button>
+      <Link
+        as={RouterLink}
+        to={`/post/` + props.postData._id}
+        w={"100%"}
+        textDecor={"none"}
+        _hover={{ textDecor: "none" }}
+      >
+        <Button
+          colorScheme="twitter"
+          size={"sm"}
+          w={"100%"}
+          onClick={props.onClose}
+        >
+          View post
+        </Button>
+      </Link>
     </Flex>
   );
 };

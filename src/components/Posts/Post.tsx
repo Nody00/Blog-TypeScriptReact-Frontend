@@ -10,6 +10,8 @@ import {
   CardBody,
   CardFooter,
   Icon,
+  useToast,
+  Link,
 } from "@chakra-ui/react";
 import {
   HiOutlineHeart,
@@ -18,9 +20,16 @@ import {
   HiOutlineShare,
   HiOutlineBookmark,
 } from "react-icons/hi";
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { RiDislikeLine } from "react-icons/ri";
 import PostGridOne from "./PostGridOne";
 import PostGridTwo from "./PostGridTwo";
 import PostGridThreePlus from "./PostGridThreePlus";
+import EditPostForm from "./EditPostForm";
+import { useAppSelector } from "../../hooks";
+import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import PostDeleteModal from "./PostDeleteModal";
 
 interface IPost {
   title: string;
@@ -35,7 +44,129 @@ interface IPost {
   authorEmail: string;
 }
 
+interface responseData {
+  result: object;
+  error: boolean;
+  errorObject: {
+    message: string;
+    statusCode: number;
+  };
+}
+
 const Post = (props: IPost) => {
+  const [editMode, setEditMode] = useState(false);
+  const isAuth = useAppSelector((state) => state.auth.isAuth);
+  const userId = useAppSelector((state) => state.auth.userId);
+  const token = useAppSelector((state) => state.auth.token);
+  const [deleteMode, setDeleteMode] = useState(false);
+  const toast = useToast();
+
+  function toggleEditModeHandler() {
+    setEditMode((prevState) => !prevState);
+  }
+
+  async function postLikeHandler() {
+    if (!isAuth) {
+      toast({
+        duration: 10000,
+        description: "Must be logged in to like posts",
+        isClosable: true,
+        status: "error",
+      });
+      return;
+    }
+    try {
+      const response = await fetch(
+        "http://localhost:8080/post/like/" + props._id,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            userId: userId,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      const responseData: responseData = await response.json();
+
+      if (responseData.error) {
+        const error = new Error(responseData.errorObject.message);
+        throw error;
+      }
+
+      toast({
+        duration: 10000,
+        description: "Post liked",
+        isClosable: true,
+        status: "success",
+      });
+    } catch (err: any) {
+      toast({
+        duration: 10000,
+        description: err.message,
+        isClosable: true,
+        status: "error",
+      });
+    }
+  }
+
+  async function postDislikeHandler() {
+    if (!isAuth) {
+      toast({
+        duration: 10000,
+        description: "Must be logged in to like posts",
+        isClosable: true,
+        status: "error",
+      });
+      return;
+    }
+    try {
+      const response = await fetch(
+        "http://localhost:8080/post/dislike/" + props._id,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            userId: userId,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      const responseData: responseData = await response.json();
+
+      if (responseData.error) {
+        const error = new Error(responseData.errorObject.message);
+        throw error;
+      }
+
+      toast({
+        duration: 10000,
+        description: "Post disliked",
+        isClosable: true,
+        status: "success",
+      });
+    } catch (err: any) {
+      toast({
+        duration: 10000,
+        description: err.message,
+        isClosable: true,
+        status: "error",
+      });
+    }
+  }
+
+  if (editMode) {
+    return (
+      <EditPostForm postData={props} toggleEditMode={toggleEditModeHandler} />
+    );
+  }
+
   return (
     <Card maxWidth={"lg"} minW={{ base: "auto", md: "md" }}>
       <CardHeader>
@@ -91,15 +222,65 @@ const Post = (props: IPost) => {
         gap={2}
       >
         <Flex alignItems={"center"} justifyContent={"flex-start"} gap={2}>
-          <Icon as={HiOutlineHeart} w={8} h={8} cursor={"pointer"} />
-          <Icon as={HiOutlineChat} w={8} h={8} cursor={"pointer"} />
+          <Icon
+            as={HiOutlineHeart}
+            w={8}
+            h={8}
+            cursor={"pointer"}
+            onClick={postLikeHandler}
+          />
+          <Icon
+            as={RiDislikeLine}
+            w={7}
+            h={7}
+            cursor={"pointer"}
+            onClick={postDislikeHandler}
+          />
+          <Link
+            as={RouterLink}
+            to={"/post/" + props._id}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <Icon as={HiOutlineChat} w={8} h={8} cursor={"pointer"} />
+          </Link>
           <Icon as={HiOutlineShare} w={7} h={7} cursor={"pointer"} />
+          {isAuth && userId === props.author && (
+            <Icon
+              as={AiOutlineEdit}
+              w={8}
+              h={8}
+              cursor={"pointer"}
+              onClick={toggleEditModeHandler}
+            />
+          )}
+
+          {isAuth && userId === props.author && (
+            <Icon
+              as={AiOutlineDelete}
+              w={8}
+              h={8}
+              cursor={"pointer"}
+              onClick={() => {
+                setDeleteMode(true);
+              }}
+            />
+          )}
         </Flex>
 
         <Flex alignItems={"center"} justifyContent={"flex-end"}>
           <Icon as={HiOutlineBookmark} w={8} h={8} cursor={"pointer"} />
         </Flex>
       </CardFooter>
+
+      <PostDeleteModal
+        isOpen={deleteMode}
+        onClose={() => {
+          setDeleteMode(false);
+        }}
+        postId={props._id}
+      />
     </Card>
   );
 };

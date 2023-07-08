@@ -30,6 +30,7 @@ interface responseData {
   token: string;
   userId: string;
   error: boolean;
+
   email: string;
   errorObject: {
     message: string;

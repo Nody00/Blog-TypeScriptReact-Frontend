@@ -11,13 +11,29 @@ import {
   FormLabel,
   Textarea,
   FormErrorMessage,
-  Text,
+  Avatar,
+  Box,
+  IconButton,
   useToast,
 } from "@chakra-ui/react";
+import { HiDotsVertical } from "react-icons/hi";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAppSelector } from "../../hooks";
 // import { useNavigate } from "react-router-dom";
+
+interface IPost {
+  title: string;
+  content: string;
+  likes: number;
+  dislikes: number;
+  favourites: number;
+  author: string;
+  images: string[];
+  _id: string;
+  comments: string[];
+  authorEmail: string;
+}
 
 interface responseData {
   result: object;
@@ -28,7 +44,10 @@ interface responseData {
   };
 }
 
-const PostForm = () => {
+const EditPostForm = (props: {
+  postData: IPost;
+  toggleEditMode: () => void;
+}) => {
   const isAuth = useAppSelector((state) => state.auth.isAuth);
   const token = useAppSelector((state) => state.auth.token);
   const userId = useAppSelector((state) => state.auth.userId);
@@ -37,11 +56,11 @@ const PostForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      title: "",
-      content: "",
-      image1: "",
-      image2: "",
-      image3: "",
+      title: props.postData.title,
+      content: props.postData.content,
+      image1: props.postData.images[0] || "",
+      image2: props.postData.images[1] || "",
+      image3: props.postData.images[2] || "",
     },
     validationSchema: Yup.object({
       title: Yup.string()
@@ -73,20 +92,22 @@ const PostForm = () => {
       }
 
       try {
-        const response = await fetch("http://localhost:8080/post/new", {
-          method: "POST",
-          body: JSON.stringify({
-            title: values.title,
-            content: values.content,
-            images: images,
-            userId: userId,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        });
-
+        const response = await fetch(
+          "http://localhost:8080/post/edit/" + props.postData._id,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              title: values.title,
+              content: values.content,
+              images: images,
+              userId: userId,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
         const responseData: responseData = await response.json();
 
         if (responseData.error) {
@@ -95,11 +116,11 @@ const PostForm = () => {
         }
         toast({
           duration: 2000,
-          description: "Post submitted successfully",
+          description: "Post edited successfully",
           isClosable: true,
           status: "success",
         });
-        // navigate("/");
+        props.toggleEditMode();
       } catch (err: any) {
         toast({
           duration: 10000,
@@ -117,8 +138,24 @@ const PostForm = () => {
         <CardHeader>
           <Flex gap="3">
             <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-              <Heading size={"md"}>Add post</Heading>
+              <Avatar
+                name="email@example.com"
+                src="https://bit.ly/sage-adebayo"
+              />
+
+              <Box>
+                <Heading size="sm">
+                  {props.postData.authorEmail || "example@email.com"}
+                </Heading>
+                {/* <Text>Creator, Chakra UI</Text> */}
+              </Box>
             </Flex>
+            <IconButton
+              variant="ghost"
+              colorScheme="gray"
+              aria-label="See menu"
+              icon={<HiDotsVertical />}
+            />
           </Flex>
         </CardHeader>
 
@@ -141,14 +178,13 @@ const PostForm = () => {
               <FormErrorMessage>{formik.errors.title}</FormErrorMessage>
             </FormControl>
 
-            <FormControl isInvalid={formik.errors.content ? true : false}>
+            <FormControl>
               <FormLabel>Post content</FormLabel>
               <Textarea
                 maxLength={400}
                 placeholder="Enter your thoughts"
                 {...formik.getFieldProps("content")}
               />
-              <FormErrorMessage>{formik.errors.content}</FormErrorMessage>
             </FormControl>
 
             <FormControl>
@@ -188,19 +224,21 @@ const PostForm = () => {
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <Button
-            isDisabled={!isAuth}
-            colorScheme="green"
-            variant={"solid"}
-            type="submit"
-          >
-            Submit
+          <Button colorScheme="green" variant={"solid"} type="submit">
+            Confirm edit
           </Button>
-          {!isAuth && <Text color={"red"}>Must be logged in to post</Text>}
+
+          <Button
+            colorScheme="red"
+            variant={"solid"}
+            onClick={props.toggleEditMode}
+          >
+            Cancel
+          </Button>
         </CardFooter>
       </form>
     </Card>
   );
 };
 
-export default PostForm;
+export default EditPostForm;

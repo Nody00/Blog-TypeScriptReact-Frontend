@@ -25,6 +25,7 @@ const Layout = () => {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     const userId = localStorage.getItem("userId");
+
     if (!token || !email || !userId) {
       return;
     }
