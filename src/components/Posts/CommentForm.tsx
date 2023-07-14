@@ -110,7 +110,7 @@ const CommentForm = (props: { postId: string; toggleForm: () => void }) => {
             <FormControl isInvalid={formik.errors.content ? true : false}>
               <Input
                 type="text"
-                maxLength={20}
+                maxLength={200}
                 placeholder="Share your thoughts"
                 {...formik.getFieldProps("content")}
               />

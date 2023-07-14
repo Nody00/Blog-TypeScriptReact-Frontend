@@ -6,7 +6,13 @@ interface IProps {
 
 const PostGridOne = (props: IProps) => {
   return (
-    <Box objectFit={"cover"} overflow={"hidden"} borderRadius={"9px"}>
+    <Box
+      objectFit={"cover"}
+      overflow={"hidden"}
+      borderRadius={"9px"}
+      cursor={"pointer"}
+      _hover={{ filter: "grayscale(80%)", transition: "all 0.4s" }}
+    >
       <Image objectFit="cover" src={props.image} alt="Chakra UI" />
     </Box>
   );

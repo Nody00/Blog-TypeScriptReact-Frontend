@@ -30,6 +30,7 @@ interface responseData {
   token: string;
   userId: string;
   error: boolean;
+  expirationDate: string;
 
   email: string;
   errorObject: {
@@ -123,6 +124,7 @@ const LoginModal = (props: IProps) => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
       localStorage.setItem("email", data.email);
+      localStorage.setItem("expDate", data.expirationDate);
 
       setTimeout(() => {
         dispatch(signOut());

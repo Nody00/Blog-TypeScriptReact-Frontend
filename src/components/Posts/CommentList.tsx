@@ -2,7 +2,11 @@ import { Button, List, ListItem, Text, ScaleFade } from "@chakra-ui/react";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 import { useState } from "react";
-const CommentList = (props: { comments: object[]; postId: string }) => {
+const CommentList = (props: {
+  comments: object[];
+  postId: string;
+  adminMode?: boolean;
+}) => {
   const [commentForm, setCommentForm] = useState(false);
 
   function toggleCommentForm() {
@@ -19,11 +23,11 @@ const CommentList = (props: { comments: object[]; postId: string }) => {
     >
       {props.comments.length === 0 && (
         <Text fontSize={"lg"} color={"#fff"}>
-          No comments,would you like to add one :)
+          No comments found.
         </Text>
       )}
 
-      {!commentForm && (
+      {!commentForm && !props.adminMode && (
         <Button
           variant={"solid"}
           colorScheme="green"

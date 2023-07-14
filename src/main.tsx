@@ -11,6 +11,8 @@ import HomePage from "./pages/HomePage.tsx";
 import PostPage from "./pages/PostPage.tsx";
 import { loader as postPageLoader } from "./pages/PostPage.tsx";
 import { loader as homePageLoader } from "./pages/HomePage.tsx";
+import UserAdminPage from "./pages/UserAdminPage.tsx";
+import { loader as UserAdminPageLoader } from "./pages/UserAdminPage.tsx";
 
 const theme = extendTheme({
   fonts: {
@@ -35,6 +37,11 @@ const router = createBrowserRouter([
         path: "post/:postId",
         element: <PostPage />,
         loader: postPageLoader,
+      },
+      {
+        path: "/userAdminPage/:userId",
+        element: <UserAdminPage />,
+        loader: UserAdminPageLoader,
       },
     ],
   },

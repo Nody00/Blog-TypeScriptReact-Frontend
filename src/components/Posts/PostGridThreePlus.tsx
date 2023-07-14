@@ -38,7 +38,7 @@ const PostGridThreePlus = (props: IProps) => {
             bgSize={"cover"}
             bgPosition={"center"}
           />
-          <Text
+          {/* <Text
             position={"absolute"}
             top={"50%"}
             left={"50%"}
@@ -48,7 +48,7 @@ const PostGridThreePlus = (props: IProps) => {
             color={"#fff"}
           >
             +2
-          </Text>
+          </Text> */}
         </Box>
       </Grid>
     </Grid>

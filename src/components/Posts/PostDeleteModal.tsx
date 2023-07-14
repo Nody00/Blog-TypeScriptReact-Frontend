@@ -72,7 +72,7 @@ const PostDeleteModal = (props: {
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Modal Title</ModalHeader>
+        <ModalHeader></ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text>Are you sure?</Text>

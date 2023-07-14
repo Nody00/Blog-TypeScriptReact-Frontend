@@ -17,7 +17,6 @@ import {
   HiOutlineHeart,
   HiDotsVertical,
   HiOutlineChat,
-  HiOutlineShare,
   HiOutlineBookmark,
 } from "react-icons/hi";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
@@ -27,9 +26,11 @@ import PostGridTwo from "./PostGridTwo";
 import PostGridThreePlus from "./PostGridThreePlus";
 import EditPostForm from "./EditPostForm";
 import { useAppSelector } from "../../hooks";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import PostDeleteModal from "./PostDeleteModal";
+import PostPhotoModal from "./PostPhotoModal";
+import { io } from "socket.io-client";
 
 interface IPost {
   title: string;
@@ -42,6 +43,17 @@ interface IPost {
   _id: string;
   comments: string[];
   authorEmail: string;
+  likedBy: {
+    [userId: string]: string;
+  };
+  dislikedBy: {
+    [userId: string]: string;
+  };
+}
+
+interface ISocketData {
+  action: string;
+  id: string;
 }
 
 interface responseData {
@@ -54,12 +66,41 @@ interface responseData {
 }
 
 const Post = (props: IPost) => {
-  const [editMode, setEditMode] = useState(false);
   const isAuth = useAppSelector((state) => state.auth.isAuth);
   const userId = useAppSelector((state) => state.auth.userId);
   const token = useAppSelector((state) => state.auth.token);
-  const [deleteMode, setDeleteMode] = useState(false);
   const toast = useToast();
+  const [likedState, setLikedState] = useState(false);
+  const [dislikedState, setDislikedState] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [photoModal, setPhotoModal] = useState(false);
+  const socket = io("http://localhost:8080");
+
+  socket.on("posts", (data: ISocketData) => {
+    if (data.action === "liked" && data.id === props._id) {
+      if (likedState) {
+        setLikedState(false);
+        return;
+      }
+      setLikedState(true);
+      setDislikedState(false);
+    }
+
+    if (data.action === "disliked" && data.id === props._id) {
+      if (dislikedState) {
+        setDislikedState(false);
+        return;
+      }
+      setDislikedState(true);
+      setLikedState(false);
+    }
+  });
+
+  useEffect(() => {
+    setLikedState(props.likedBy[userId] === "" ? true : false);
+    setDislikedState(props.dislikedBy[userId] === "" ? true : false);
+  }, [userId]);
 
   function toggleEditModeHandler() {
     setEditMode((prevState) => !prevState);
@@ -97,12 +138,12 @@ const Post = (props: IPost) => {
         throw error;
       }
 
-      toast({
-        duration: 10000,
-        description: "Post liked",
-        isClosable: true,
-        status: "success",
-      });
+      // toast({
+      //   duration: 10000,
+      //   description: "Post liked",
+      //   isClosable: true,
+      //   status: "success",
+      // });
     } catch (err: any) {
       toast({
         duration: 10000,
@@ -145,12 +186,12 @@ const Post = (props: IPost) => {
         throw error;
       }
 
-      toast({
-        duration: 10000,
-        description: "Post disliked",
-        isClosable: true,
-        status: "success",
-      });
+      // toast({
+      //   duration: 10000,
+      //   description: "Post disliked",
+      //   isClosable: true,
+      //   status: "success",
+      // });
     } catch (err: any) {
       toast({
         duration: 10000,
@@ -173,15 +214,14 @@ const Post = (props: IPost) => {
         <Flex gap="3">
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
             <Avatar
-              name="email@example.com"
-              src="https://bit.ly/sage-adebayo"
+              name={props.authorEmail}
+              // src="https://bit.ly/sage-adebayo"
             />
 
             <Box>
               <Heading size="sm">
                 {props.authorEmail || "example@email.com"}
               </Heading>
-              {/* <Text>Creator, Chakra UI</Text> */}
             </Box>
           </Flex>
           <IconButton
@@ -206,10 +246,18 @@ const Post = (props: IPost) => {
           {props.content}
         </Text>
 
-        <Box>
-          {props.images.length === 1 && <PostGridOne image={props.images[0]} />}
-          {props.images.length === 2 && <PostGridTwo images={props.images} />}
-          {props.images.length >= 3 && (
+        <Box
+          onClick={() => {
+            setPhotoModal(true);
+          }}
+        >
+          {props.images && props.images.length === 1 && (
+            <PostGridOne image={props.images[0]} />
+          )}
+          {props.images && props.images.length === 2 && (
+            <PostGridTwo images={props.images} />
+          )}
+          {props.images && props.images.length >= 3 && (
             <PostGridThreePlus images={props.images} />
           )}
         </Box>
@@ -228,6 +276,8 @@ const Post = (props: IPost) => {
             h={8}
             cursor={"pointer"}
             onClick={postLikeHandler}
+            fill={likedState ? "red" : "#fff"}
+            color={likedState ? "red" : "#000"}
           />
           <Icon
             as={RiDislikeLine}
@@ -235,6 +285,7 @@ const Post = (props: IPost) => {
             h={7}
             cursor={"pointer"}
             onClick={postDislikeHandler}
+            color={dislikedState ? "blue" : "#000"}
           />
           <Link
             as={RouterLink}
@@ -245,7 +296,7 @@ const Post = (props: IPost) => {
           >
             <Icon as={HiOutlineChat} w={8} h={8} cursor={"pointer"} />
           </Link>
-          <Icon as={HiOutlineShare} w={7} h={7} cursor={"pointer"} />
+          {/* <Icon as={HiOutlineShare} w={7} h={7} cursor={"pointer"} /> */}
           {isAuth && userId === props.author && (
             <Icon
               as={AiOutlineEdit}
@@ -274,12 +325,22 @@ const Post = (props: IPost) => {
         </Flex>
       </CardFooter>
 
+      {/* modals,portaled */}
+
       <PostDeleteModal
         isOpen={deleteMode}
         onClose={() => {
           setDeleteMode(false);
         }}
         postId={props._id}
+      />
+
+      <PostPhotoModal
+        isOpen={photoModal}
+        onClose={() => {
+          setPhotoModal(false);
+        }}
+        images={props.images}
       />
     </Card>
   );

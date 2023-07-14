@@ -11,6 +11,7 @@ interface payload {
   token: string;
   userId: string;
   email: string;
+  // expirationDate: string;
 }
 
 const initialState: authState = {
@@ -36,6 +37,7 @@ export const authSlice = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("email");
       localStorage.removeItem("userId");
+      localStorage.removeItem("expDate");
     },
   },
 });

@@ -25,8 +25,17 @@ const Layout = () => {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     const userId = localStorage.getItem("userId");
+    const expDate = localStorage.getItem("expDate");
 
-    if (!token || !email || !userId) {
+    if (!token || !email || !userId || !expDate) {
+      return;
+    }
+
+    const now = new Date();
+    const exp = new Date(expDate);
+
+    if (now > exp) {
+      console.log("Hey your token hase expired");
       return;
     }
 
@@ -62,7 +71,7 @@ const Layout = () => {
 
       {/* Main content */}
       <Box pt={40} position={"relative"}>
-        <Box maxW={"1100px"} ml={"auto"} mr={"auto"}>
+        <Box maxW={"1100px"} ml={"auto"} mr={"auto"} h={"100rem"}>
           {/* <AnimatedBg /> */}
           <Box
             position={"absolute"}

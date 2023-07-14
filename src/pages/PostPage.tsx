@@ -34,6 +34,12 @@ interface IPost {
   _id: string;
   comments: string[];
   authorEmail: string;
+  likedBy: {
+    [userId: string]: string;
+  };
+  dislikedBy: {
+    [userId: string]: string;
+  };
 }
 
 interface ISocketData {
@@ -49,7 +55,6 @@ interface ISocketData {
 const PostPage = () => {
   const data: any = useLoaderData();
 
-  console.log(data);
   useEffect(() => {
     const newData = lodash.cloneDeep(data.post);
     setPostData(newData);
@@ -118,7 +123,7 @@ const PostPage = () => {
       justifyContent={"flex-start"}
       direction={"column"}
       gap={5}
-      h={"500rem"}
+      h={"100vh"}
     >
       <Post
         authorEmail={postData.authorEmail}
@@ -131,6 +136,8 @@ const PostPage = () => {
         favourites={postData.favourites}
         author={postData.author}
         images={postData.images}
+        likedBy={postData.likedBy}
+        dislikedBy={postData.dislikedBy}
       />
       {/* comments component */}
 

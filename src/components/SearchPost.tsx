@@ -19,7 +19,7 @@ const SearchPost = (props: { postData: IPostData; onClose: () => void }) => {
       mb={5}
       p={2}
       borderRadius={"9px"}
-      bgColor={"gray.100"}
+      bgColor={"#f8f9fa"}
     >
       <Text
         fontSize={"2rem"}

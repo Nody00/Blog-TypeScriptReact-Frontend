@@ -1,12 +1,11 @@
 import HomePageHero from "../components/HomePageHero";
 import { Flex, Button, ScaleFade } from "@chakra-ui/react";
 
-// import LoadingSkeleton from "../components/Posts/LoadingSkeleton";
+import LoadingSkeleton from "../components/Posts/LoadingSkeleton";
 import PostForm from "../components/Posts/PostForm";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, defer, Await } from "react-router-dom";
 import PostList from "../components/Posts/PostList";
-import { useState, useEffect } from "react";
-import { io } from "socket.io-client";
+import { useState, Suspense } from "react";
 
 interface IPost {
   title: string;
@@ -19,6 +18,12 @@ interface IPost {
   _id: string;
   comments: string[];
   authorEmail: string;
+  likedBy: {
+    [userId: string]: string;
+  };
+  dislikedBy: {
+    [userId: string]: string;
+  };
 }
 
 interface ILoaderData {
@@ -26,70 +31,16 @@ interface ILoaderData {
   posts: IPost[];
 }
 
-interface ISocketData {
-  action: string;
-  newPost: IPost;
-  deletedId: string;
-  editedPost: IPost;
-}
-
 const HomePage = () => {
   const [addPostMode, setAddPostMode] = useState(false);
   const postData = useLoaderData() as ILoaderData;
-  const [postDataState, setPostDataState] = useState([...postData.posts]);
-  const socket = io("http://localhost:8080");
-
-  socket.on("posts", (data: ISocketData) => {
-    if (data.action === "new") {
-      // add post to state
-      const updatedState = [...postDataState];
-      updatedState.unshift(data.newPost);
-      setPostDataState([...updatedState]);
-      setAddPostMode(false);
-      return;
-    }
-
-    if (data.action === "delete") {
-      // post deleted remove from state
-      const updatedState = [...postDataState];
-      const itemToDeleteIndex = updatedState.findIndex(
-        (e) => e._id === data.deletedId
-      );
-
-      if (itemToDeleteIndex === -1) {
-        throw new Error(
-          "No such item found,server and client out of sync,please reload!"
-        );
-      }
-      updatedState.splice(itemToDeleteIndex, 1);
-      setPostDataState([...updatedState]);
-      return;
-    }
-
-    if (data.action === "edit") {
-      // if post edited update state
-      const updatedState = [...postDataState];
-      const itemToDeleteIndex = updatedState.findIndex(
-        (e) => e._id === data.editedPost._id
-      );
-
-      if (itemToDeleteIndex === -1) {
-        throw new Error(
-          "No such item found,server and client out of sync,please reload!"
-        );
-      }
-
-      updatedState[itemToDeleteIndex] = data.editedPost;
-
-      setPostDataState([...updatedState]);
-      return;
-    }
-
-    // if post disliked update state
-  });
 
   function toggleAddPostMode() {
     setAddPostMode((prevState) => !prevState);
+  }
+
+  function hidePostForm() {
+    setAddPostMode(false);
   }
 
   return (
@@ -120,20 +71,36 @@ const HomePage = () => {
         <PostForm />
       </ScaleFade>
 
-      {/* <LoadingSkeleton /> */}
-      <PostList posts={postDataState} />
+      <Suspense fallback={<LoadingSkeleton />}>
+        <Await resolve={postData.posts}>
+          {(loadedPosts) => {
+            return <PostList posts={loadedPosts} hidePostForm={hidePostForm} />;
+          }}
+        </Await>
+      </Suspense>
     </Flex>
   );
 };
 
 export default HomePage;
 
-export async function loader() {
+async function loadPosts() {
   try {
     const response = await fetch("http://localhost:8080/post/all");
 
-    const posts = await response.json();
+    if (!response.ok) {
+      throw new Error("Could not load posts ");
+    }
 
-    return posts;
-  } catch (err) {}
+    const responseData = await response.json();
+    return responseData.posts;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function loader() {
+  return defer({
+    posts: loadPosts(),
+  });
 }

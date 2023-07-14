@@ -1,4 +1,4 @@
-import { Flex, Button, IconButton, Hide, Icon } from "@chakra-ui/react";
+import { Flex, Button, IconButton, Hide, Icon, Link } from "@chakra-ui/react";
 import { FaUserLarge, FaBars } from "react-icons/fa6";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import MobileNav from "./MobileNav";
 import SignUpModal from "./SignUpModal";
 import MobileSearchModal from "./MobileSearchModal";
 import { useAppSelector } from "../hooks";
+import { Link as RouterLink } from "react-router-dom";
 
 const LayoutNav = () => {
   const [loginModal, setLoginModal] = useState(false);
@@ -17,6 +18,7 @@ const LayoutNav = () => {
   const [mobileSearch, setMobileSearch] = useState(false);
 
   const isAuth = useAppSelector((state) => state.auth.isAuth);
+  const userId = useAppSelector((state) => state.auth.userId);
 
   function hideMobileSearch() {
     setMobileSearch(false);
@@ -86,12 +88,14 @@ const LayoutNav = () => {
         </Button>
 
         {isAuth && (
-          <IconButton
-            aria-label="Account settings"
-            icon={<FaUserLarge />}
-            size={"xs"}
-            colorScheme="twitter"
-          />
+          <Link as={RouterLink} to={`/userAdminPage/${userId}`}>
+            <IconButton
+              aria-label="Account settings"
+              icon={<FaUserLarge />}
+              size={"xs"}
+              colorScheme="twitter"
+            />
+          </Link>
         )}
         <Button
           size={"xs"}
