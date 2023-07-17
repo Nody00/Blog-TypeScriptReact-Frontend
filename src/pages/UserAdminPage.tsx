@@ -3,33 +3,33 @@ import UserInfoCard from "../components/UserInfoCard";
 import { useLoaderData } from "react-router-dom";
 import UserInfoData from "../components/UserInfoData";
 
-interface IPost {
-  title: string;
-  content: string;
-  likes: number;
-  dislikes: number;
-  favourites: number;
-  author: string;
-  images: string[];
-  _id: string;
-  comments: string[];
-  authorEmail: string;
-  likedBy: {
-    [userId: string]: string;
-  };
-  dislikedBy: {
-    [userId: string]: string;
-  };
-}
+// interface IPost {
+//   title: string;
+//   content: string;
+//   likes: number;
+//   dislikes: number;
+//   favourites: number;
+//   author: string;
+//   images: string[];
+//   _id: string;
+//   comments: string[];
+//   authorEmail: string;
+//   likedBy: {
+//     [userId: string]: string;
+//   };
+//   dislikedBy: {
+//     [userId: string]: string;
+//   };
+// }
 
-interface IComment {
-  author: string;
-  post: string;
-  content: string;
-  likes: number;
-  dislikes: number;
-  _id: string;
-}
+// interface IComment {
+//   author: string;
+//   post: string;
+//   content: string;
+//   likes: number;
+//   dislikes: number;
+//   _id: string;
+// }
 
 const UserAdminPage = () => {
   const userData: any = useLoaderData();

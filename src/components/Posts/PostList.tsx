@@ -1,4 +1,4 @@
-import { List, ListItem, Center, Text, Flex } from "@chakra-ui/react";
+import { List, ListItem, Text, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { io } from "socket.io-client";
 import Post from "./Post";

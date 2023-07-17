@@ -15,9 +15,7 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import { useAppSelector } from "../hooks";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../hooks";
-import { signOut } from "../slices/authSlice";
+
 import { useState } from "react";
 
 interface responseData {
@@ -47,8 +45,6 @@ const UserChangeEmailModal = (props: {
   const toast = useToast();
   const userId = useAppSelector((state) => state.auth.userId);
   const token = useAppSelector((state) => state.auth.token);
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   function passwordChangeHandler(e: { target: HTMLInputElement }) {
     setUserPassword(e.target.value);
