@@ -1,6 +1,6 @@
 import { Box, Grid } from "@chakra-ui/react";
 import UserInfoCard from "../components/UserInfoCard";
-import { LoaderFunction, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import UserInfoData from "../components/UserInfoData";
 
 // interface IPost {
