@@ -1,6 +1,6 @@
 import { Box, Grid } from "@chakra-ui/react";
 import UserInfoCard from "../components/UserInfoCard";
-import { useLoaderData } from "react-router-dom";
+import { LoaderFunction, useLoaderData } from "react-router-dom";
 import UserInfoData from "../components/UserInfoData";
 
 // interface IPost {
@@ -56,7 +56,7 @@ export default UserAdminPage;
 
 // load user profile and populate all the fields you need
 
-export async function loader({ params }: { params: { userId: string } }) {
+export async function loader({ params }) {
   try {
     const result = await fetch(
       `${

@@ -1,4 +1,4 @@
-import { Box, List, ListItem, Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import PostList from "./Posts/PostList";
 import CommentList from "./Posts/CommentList";

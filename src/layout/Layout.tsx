@@ -4,7 +4,7 @@ import { Outlet, Link as RouterLink } from "react-router-dom";
 import { FaBookOpen } from "react-icons/fa6";
 import SearchBar from "./SearchBar";
 import LayoutNav from "./LayoutNav";
-import AnimatedBg from "./AnimatedBg";
+// import AnimatedBg from "./AnimatedBg";
 import { useEffect } from "react";
 import { useAppDispatch } from "../hooks";
 import { signIn } from "../slices/authSlice";

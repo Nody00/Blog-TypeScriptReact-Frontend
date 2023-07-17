@@ -1,4 +1,4 @@
-import { Grid, Box, Text } from "@chakra-ui/react";
+import { Grid, Box } from "@chakra-ui/react";
 
 interface IProps {
   images: string[];
