@@ -71,7 +71,9 @@ const UserDeleteProfileModal = (props: {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/auth/deleteProfile/" + userId,
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/auth/deleteProfile/` + userId,
         {
           method: "POST",
           body: JSON.stringify({ password: userPassword }),

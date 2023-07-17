@@ -73,19 +73,24 @@ const PostForm = () => {
       }
 
       try {
-        const response = await fetch("http://localhost:8080/post/new", {
-          method: "POST",
-          body: JSON.stringify({
-            title: values.title,
-            content: values.content,
-            images: images,
-            userId: userId,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        });
+        const response = await fetch(
+          `${
+            import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+          }/post/new`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              title: values.title,
+              content: values.content,
+              images: images,
+              userId: userId,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
 
         const responseData: responseData = await response.json();
 

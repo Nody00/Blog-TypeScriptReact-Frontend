@@ -34,7 +34,9 @@ const CommentDeleteModal = (props: {
   async function deleteCommentHandler() {
     try {
       const response = await fetch(
-        "http://localhost:8080/post/comment/delete/" + props.commentId,
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/post/comment/delete/` + props.commentId,
         {
           method: "POST",
           body: JSON.stringify({

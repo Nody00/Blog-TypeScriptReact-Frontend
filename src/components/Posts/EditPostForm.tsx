@@ -93,7 +93,9 @@ const EditPostForm = (props: {
 
       try {
         const response = await fetch(
-          "http://localhost:8080/post/edit/" + props.postData._id,
+          `${
+            import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+          }/post/edit/` + props.postData._id,
           {
             method: "POST",
             body: JSON.stringify({
@@ -138,10 +140,7 @@ const EditPostForm = (props: {
         <CardHeader>
           <Flex gap="3">
             <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-              <Avatar
-                name="email@example.com"
-                src="https://bit.ly/sage-adebayo"
-              />
+              <Avatar name="email@example.com" />
 
               <Box>
                 <Heading size="sm">

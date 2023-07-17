@@ -86,7 +86,9 @@ export default HomePage;
 
 async function loadPosts() {
   try {
-    const response = await fetch("http://localhost:8080/post/all");
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"}/post/all`
+    );
 
     if (!response.ok) {
       throw new Error("Could not load posts ");

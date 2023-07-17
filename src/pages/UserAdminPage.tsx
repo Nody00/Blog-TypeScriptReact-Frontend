@@ -59,7 +59,9 @@ export default UserAdminPage;
 export async function loader({ params }: { params: { userId: string } }) {
   try {
     const result = await fetch(
-      "http://localhost:8080/post/getData/" + params.userId
+      `${
+        import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+      }/post/getData/` + params.userId
     );
 
     const data = await result.json();

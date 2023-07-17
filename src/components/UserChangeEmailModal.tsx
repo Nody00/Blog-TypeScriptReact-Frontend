@@ -95,7 +95,9 @@ const UserChangeEmailModal = (props: {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/auth/changeEmail/" + userId,
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/auth/changeEmail/` + userId,
         {
           method: "POST",
           body: JSON.stringify({ email: email, password: userPassword }),

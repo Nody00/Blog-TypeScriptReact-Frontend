@@ -50,7 +50,9 @@ const CommentForm = (props: { postId: string; toggleForm: () => void }) => {
       }
       try {
         const response = await fetch(
-          "http://localhost:8080/post/comment/" + props.postId,
+          `${
+            import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+          }/post/comment/` + props.postId,
           {
             method: "POST",
             body: JSON.stringify({

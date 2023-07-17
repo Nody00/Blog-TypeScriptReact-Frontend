@@ -1,4 +1,4 @@
-import { List, ListItem, Center, Text } from "@chakra-ui/react";
+import { List, ListItem, Center, Text, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { io } from "socket.io-client";
 import Post from "./Post";
@@ -35,7 +35,9 @@ interface ISocketData {
 const PostList = (props: IProps | any) => {
   const [postDataState, setPostDataState] = useState([...props.posts]);
 
-  const socket = io("http://localhost:8080");
+  const socket = io(
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+  );
 
   socket.on("posts", (data: ISocketData) => {
     if (data.action === "new") {
@@ -86,16 +88,34 @@ const PostList = (props: IProps | any) => {
     // if post disliked update state
   });
   return (
-    <Center>
+    <Flex
+      direction={"column"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      w={"100%"}
+    >
       {postDataState.length === 0 && (
         <Text fontSize={"lg"} color={"#fff"}>
           No posts found.
         </Text>
       )}
-      <List spacing={"4"}>
+      <List
+        spacing={"4"}
+        w={"100%"}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
         {postDataState.map((post: IPost) => {
           return (
-            <ListItem key={post._id}>
+            <ListItem
+              key={post._id}
+              w={"100%"}
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
               <Post
                 authorEmail={post.authorEmail}
                 _id={post._id}
@@ -114,7 +134,7 @@ const PostList = (props: IProps | any) => {
           );
         })}
       </List>
-    </Center>
+    </Flex>
   );
 };
 

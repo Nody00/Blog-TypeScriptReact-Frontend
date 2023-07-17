@@ -62,7 +62,9 @@ const PostPage = () => {
 
   const [postData, setPostData] = useState(data.post);
 
-  const socket = io("http://localhost:8080");
+  const socket = io(
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+  );
 
   socket.on("posts", (data: ISocketData) => {
     if (data.action === "edit") {
@@ -124,21 +126,24 @@ const PostPage = () => {
       direction={"column"}
       gap={5}
       h={"100vh"}
+      w={"100%"}
     >
-      <Post
-        authorEmail={postData.authorEmail}
-        _id={postData._id}
-        comments={postData.comments}
-        title={postData.title}
-        content={postData.content}
-        likes={postData.likes}
-        dislikes={postData.dislikes}
-        favourites={postData.favourites}
-        author={postData.author}
-        images={postData.images}
-        likedBy={postData.likedBy}
-        dislikedBy={postData.dislikedBy}
-      />
+      <Flex alignItems={"center"} justifyContent={"center"} w={"100%"}>
+        <Post
+          authorEmail={postData.authorEmail}
+          _id={postData._id}
+          comments={postData.comments}
+          title={postData.title}
+          content={postData.content}
+          likes={postData.likes}
+          dislikes={postData.dislikes}
+          favourites={postData.favourites}
+          author={postData.author}
+          images={postData.images}
+          likedBy={postData.likedBy}
+          dislikedBy={postData.dislikedBy}
+        />
+      </Flex>
       {/* comments component */}
 
       <CommentList postId={postData._id} comments={postData.comments} />
@@ -151,7 +156,10 @@ export default PostPage;
 export async function loader({ params }: { params: any }) {
   const id: string = params.postId;
   try {
-    const response = await fetch("http://localhost:8080/post/" + id);
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"}/post/` +
+        id
+    );
 
     const responseData: responseData = await response.json();
 

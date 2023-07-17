@@ -75,7 +75,9 @@ const Post = (props: IPost) => {
   const [editMode, setEditMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
   const [photoModal, setPhotoModal] = useState(false);
-  const socket = io("http://localhost:8080");
+  const socket = io(
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+  );
 
   socket.on("posts", (data: ISocketData) => {
     if (data.action === "liked" && data.id === props._id) {
@@ -118,7 +120,9 @@ const Post = (props: IPost) => {
     }
     try {
       const response = await fetch(
-        "http://localhost:8080/post/like/" + props._id,
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/post/like/` + props._id,
         {
           method: "POST",
           body: JSON.stringify({
@@ -166,7 +170,9 @@ const Post = (props: IPost) => {
     }
     try {
       const response = await fetch(
-        "http://localhost:8080/post/dislike/" + props._id,
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/post/dislike/` + props._id,
         {
           method: "POST",
           body: JSON.stringify({
@@ -209,13 +215,13 @@ const Post = (props: IPost) => {
   }
 
   return (
-    <Card maxWidth={"lg"} minW={{ base: "auto", md: "md" }}>
+    <Card minW={{ base: "100%", md: "lg" }}>
       <CardHeader>
-        <Flex gap="3">
-          <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+        <Flex gap="3" alignItems={"center"} justifyContent={"space-between"}>
+          <Flex gap="4" alignItems="center">
             <Avatar
               name={props.authorEmail}
-              // src="https://bit.ly/sage-adebayo"
+             
             />
 
             <Box>
@@ -240,8 +246,8 @@ const Post = (props: IPost) => {
           mb={2}
           w={"calc(100%)"}
           textOverflow={"ellipsis"}
-          overflow={"hidden"}
-          whiteSpace={"nowrap"}
+          // overflow={"hidden"}
+          // whiteSpace={"nowrap"}
         >
           {props.content}
         </Text>

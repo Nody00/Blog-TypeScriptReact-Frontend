@@ -34,7 +34,9 @@ const PostDeleteModal = (props: {
   async function deletePostHandler() {
     try {
       const response = await fetch(
-        "http://localhost:8080/post/delete/" + props.postId,
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/post/delete/` + props.postId,
         {
           method: "POST",
           body: JSON.stringify({

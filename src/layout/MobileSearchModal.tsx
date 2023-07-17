@@ -43,15 +43,20 @@ const MobileSearchModal = (props: IProps) => {
 
   async function searchHandler(e: { target: HTMLInputElement }) {
     try {
-      const response = await fetch("http://localhost:8080/post/search", {
-        method: "POST",
-        body: JSON.stringify({
-          filter: e.target.value,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/post/search`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            filter: e.target.value,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const responseData: responseData = await response.json();
 

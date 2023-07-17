@@ -62,7 +62,9 @@ const EditCommentForm = (props: {
 
       try {
         const response = await fetch(
-          "http://localhost:8080/post/comment/edit/" + props.commentData._id,
+          `${
+            import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+          }/post/comment/edit/` + props.commentData._id,
           {
             method: "POST",
             body: JSON.stringify({

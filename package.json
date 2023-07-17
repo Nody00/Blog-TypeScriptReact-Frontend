@@ -28,6 +28,7 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
+    "@testing-library/react": "^14.0.0",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@types/react-redux": "^7.1.25",

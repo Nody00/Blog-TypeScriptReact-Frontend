@@ -89,7 +89,9 @@ const UserChangePasswordModal = (props: {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/auth/changePassword/" + userId,
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/auth/changePassword/` + userId,
         {
           method: "POST",
           body: JSON.stringify({

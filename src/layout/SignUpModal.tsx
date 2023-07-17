@@ -111,16 +111,21 @@ const SignUpModal = (props: IProps) => {
     });
 
     try {
-      const result = await fetch("http://localhost:8080/auth/signup", {
-        method: "POST",
-        body: JSON.stringify({
-          email: emailValue,
-          password: passwordValue,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const result = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/auth/signup`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: emailValue,
+            password: passwordValue,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data: responseData = await result.json();
 

@@ -7,7 +7,13 @@ const UserInfoData = (props: any) => {
   const [showingData, setShowingData] = useState("none");
   return (
     <>
-      <Flex alignItems={"center"} justifyContent={"center"} gap={3} mb={3}>
+      <Flex
+        alignItems={"center"}
+        justifyContent={"center"}
+        gap={3}
+        mb={3}
+        direction={{ base: "column", md: "row" }}
+      >
         <Button
           variant={"solid"}
           colorScheme="twitter"

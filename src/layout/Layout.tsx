@@ -71,7 +71,7 @@ const Layout = () => {
 
       {/* Main content */}
       <Box pt={40} position={"relative"}>
-        <Box maxW={"1100px"} ml={"auto"} mr={"auto"} h={"100rem"}>
+        <Box maxW={"1100px"} ml={"auto"} mr={"auto"}>
           {/* <AnimatedBg /> */}
           <Box
             position={"absolute"}
