@@ -125,9 +125,8 @@ const PostPage = () => {
       justifyContent={"flex-start"}
       direction={"column"}
       gap={5}
-      // h={"100vh"}
+      pb={"100rem"}
       w={"100%"}
-      mb={10}
     >
       <Flex alignItems={"center"} justifyContent={"center"} w={"100%"}>
         <Post
