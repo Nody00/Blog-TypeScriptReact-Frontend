@@ -215,14 +215,11 @@ const Post = (props: IPost) => {
   }
 
   return (
-    <Card minW={{ base: "100%", md: "lg" }}>
+    <Card minW={{ base: "100%", md: "lg" }} maxW={"lg"}>
       <CardHeader>
         <Flex gap="3" alignItems={"center"} justifyContent={"space-between"}>
           <Flex gap="4" alignItems="center">
-            <Avatar
-              name={props.authorEmail}
-             
-            />
+            <Avatar name={props.authorEmail} />
 
             <Box>
               <Heading size="sm">
