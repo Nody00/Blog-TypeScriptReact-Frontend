@@ -162,7 +162,7 @@ const Post = (props: IPost) => {
     if (!isAuth) {
       toast({
         duration: 10000,
-        description: "Must be logged in to like posts",
+        description: "Must be logged in to dislike posts",
         isClosable: true,
         status: "error",
       });

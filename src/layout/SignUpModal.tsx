@@ -15,6 +15,7 @@ import {
   FormErrorMessage,
   useToast,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -40,6 +41,8 @@ const SignUpModal = (props: IProps) => {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [passwordEqualError, setPasswordEqualError] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [errorState, setErrorState] = useState({
     error: false,
@@ -101,6 +104,7 @@ const SignUpModal = (props: IProps) => {
   }
 
   async function submitHandler() {
+    setIsLoading(true);
     if (emailError || passwordError || passwordEqualError) {
       return;
     }
@@ -147,11 +151,11 @@ const SignUpModal = (props: IProps) => {
         status: "success",
         isClosable: true,
       });
-
+      setIsLoading(false);
       props.onClose();
     } catch (error: any) {
       // do error handling with toast maybe
-
+      setIsLoading(false);
       toast({
         title: error.message || "Error",
         variant: "left-accent",
@@ -234,9 +238,21 @@ const SignUpModal = (props: IProps) => {
                 {errorState.errorMessage}
               </Text>
             )}
-            <Button colorScheme="green" mr={3} onClick={submitHandler}>
-              Create account
-            </Button>
+            {!isLoading && (
+              <Button colorScheme="green" mr={3} onClick={submitHandler}>
+                Create account
+              </Button>
+            )}
+            {isLoading && (
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="green"
+                size="lg"
+                mr={3}
+              />
+            )}
             <Button onClick={props.onClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>

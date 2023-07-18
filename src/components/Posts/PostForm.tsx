@@ -13,8 +13,10 @@ import {
   FormErrorMessage,
   Text,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import { useState } from "react";
 import * as Yup from "yup";
 import { useAppSelector } from "../../hooks";
 // import { useNavigate } from "react-router-dom";
@@ -33,6 +35,7 @@ const PostForm = () => {
   const token = useAppSelector((state) => state.auth.token);
   const userId = useAppSelector((state) => state.auth.userId);
   const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   // const navigate = useNavigate();
 
   const formik = useFormik({
@@ -73,6 +76,7 @@ const PostForm = () => {
       }
 
       try {
+        setIsLoading(true);
         const response = await fetch(
           `${
             import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
@@ -98,6 +102,7 @@ const PostForm = () => {
           const error = new Error(responseData.errorObject.message);
           throw error;
         }
+        setIsLoading(false);
         toast({
           duration: 2000,
           description: "Post submitted successfully",
@@ -106,6 +111,8 @@ const PostForm = () => {
         });
         // navigate("/");
       } catch (err: any) {
+        setIsLoading(false);
+
         toast({
           duration: 10000,
           description: err.message,
@@ -193,14 +200,26 @@ const PostForm = () => {
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <Button
-            isDisabled={!isAuth}
-            colorScheme="green"
-            variant={"solid"}
-            type="submit"
-          >
-            Submit
-          </Button>
+          {!isLoading && (
+            <Button
+              isDisabled={!isAuth}
+              colorScheme="green"
+              variant={"solid"}
+              type="submit"
+            >
+              Submit
+            </Button>
+          )}
+          {isLoading && (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="green"
+              size="lg"
+              mr={3}
+            />
+          )}
           {!isAuth && <Text color={"red"}>Must be logged in to post</Text>}
         </CardFooter>
       </form>

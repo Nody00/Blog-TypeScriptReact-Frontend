@@ -16,6 +16,7 @@ import {
   FormErrorMessage,
   useToast,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -49,6 +50,7 @@ const LoginModal = (props: IProps) => {
     error: false,
     errorMessage: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const toast = useToast();
 
@@ -89,6 +91,7 @@ const LoginModal = (props: IProps) => {
   }
 
   async function submitHandler() {
+    setIsLoading(true);
     if (emailError || passwordError) {
       return;
     }
@@ -142,7 +145,7 @@ const LoginModal = (props: IProps) => {
         status: "success",
         isClosable: true,
       });
-
+      setIsLoading(false);
       props.onClose();
     } catch (error: any) {
       // do error handling with toast maybe
@@ -153,6 +156,7 @@ const LoginModal = (props: IProps) => {
         status: "error",
         isClosable: true,
       });
+      setIsLoading(false);
     }
   }
 
@@ -208,9 +212,22 @@ const LoginModal = (props: IProps) => {
                 {errorState.errorMessage}
               </Text>
             )}
-            <Button colorScheme="blue" mr={3} onClick={submitHandler}>
-              Login
-            </Button>
+            {!isLoading && (
+              <Button colorScheme="blue" mr={3} onClick={submitHandler}>
+                Login
+              </Button>
+            )}
+
+            {isLoading && (
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue"
+                size="lg"
+                mr={3}
+              />
+            )}
             <Button onClick={props.onClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>

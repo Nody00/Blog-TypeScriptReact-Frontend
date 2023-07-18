@@ -72,7 +72,7 @@ const Comment = (props: { commentData: commentData }) => {
     } catch (error: any) {
       toast({
         duration: 2000,
-        description: error.message,
+        description: "Must be logged in to like comments",
         isClosable: true,
         status: "error",
       });
@@ -114,7 +114,7 @@ const Comment = (props: { commentData: commentData }) => {
     } catch (error: any) {
       toast({
         duration: 2000,
-        description: error.message,
+        description: "Must be logged in to dislike comments",
         isClosable: true,
         status: "error",
       });

@@ -58,6 +58,7 @@ const PostPage = () => {
   useEffect(() => {
     const newData = lodash.cloneDeep(data.post);
     setPostData(newData);
+    window.scrollTo(0, 0);
   }, [data]);
 
   const [postData, setPostData] = useState(data.post);
