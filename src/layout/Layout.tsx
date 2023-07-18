@@ -54,14 +54,18 @@ const Layout = () => {
           pr={"1.6rem"}
           pl={"1.6rem"}
         >
-          <Flex alignItems={"center"} justifyContent={"center"} gap={"0.5rem"}>
-            <Link as={RouterLink} to="/">
+          <Link as={RouterLink} to="/">
+            <Flex
+              alignItems={"center"}
+              justifyContent={"center"}
+              gap={"0.5rem"}
+            >
               <Text color={"#fff"} fontSize={{ base: "1.2rem", md: "1.4rem" }}>
                 Blog
               </Text>
-            </Link>
-            <Icon as={FaBookOpen} color={"#fff"} w={6} h={6} />
-          </Flex>
+              <Icon as={FaBookOpen} color={"#fff"} w={6} h={6} />
+            </Flex>
+          </Link>
 
           <SearchBar />
 
