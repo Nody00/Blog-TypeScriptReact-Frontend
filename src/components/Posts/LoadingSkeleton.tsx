@@ -4,7 +4,8 @@ const LoadingSkeleton = () => {
   return (
     <Flex
       padding={4}
-      w={"30rem"}
+      // w={"30rem"}
+      maxW={"lg"}
       direction={"column"}
       gap={10}
       mb={5}
