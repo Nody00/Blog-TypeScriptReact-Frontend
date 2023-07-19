@@ -1,4 +1,10 @@
-import { Flex, Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import {
+  Flex,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+  Text,
+} from "@chakra-ui/react";
 
 const LoadingSkeleton = () => {
   return (
@@ -12,6 +18,9 @@ const LoadingSkeleton = () => {
       bgColor={"#fff"}
       borderRadius={"12px"}
     >
+      <Text fontWeight={600}>
+        Please wait at least 20s for the backend instance to spin up
+      </Text>
       <SkeletonCircle />
       <SkeletonText height={"20px"} />
       <SkeletonText height={"20px"} />
