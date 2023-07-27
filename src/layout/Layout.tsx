@@ -26,8 +26,9 @@ const Layout = () => {
     const email = localStorage.getItem("email");
     const userId = localStorage.getItem("userId");
     const expDate = localStorage.getItem("expDate");
+    const username = localStorage.getItem("username");
 
-    if (!token || !email || !userId || !expDate) {
+    if (!token || !email || !userId || !expDate || !username) {
       return;
     }
 
@@ -39,7 +40,7 @@ const Layout = () => {
       return;
     }
 
-    dispatch(signIn({ token, userId, email }));
+    dispatch(signIn({ token, userId, email, username }));
   }, []);
   return (
     <Box overflowY={"hidden"}>

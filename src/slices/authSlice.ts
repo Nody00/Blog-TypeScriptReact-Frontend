@@ -5,12 +5,14 @@ interface authState {
   userId: string;
   isAuth: boolean;
   email: string;
+  username: string;
 }
 
 interface payload {
   token: string;
   userId: string;
   email: string;
+  username: string;
   // expirationDate: string;
 }
 
@@ -19,6 +21,7 @@ const initialState: authState = {
   userId: "",
   isAuth: false,
   email: "",
+  username: "",
 };
 
 export const authSlice = createSlice({
@@ -26,11 +29,12 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     signIn: (state, action: { payload: payload }) => {
-      const { token, userId, email } = action.payload;
+      const { token, userId, email, username } = action.payload;
       state.isAuth = true;
       state.token = token;
       state.userId = userId;
       state.email = email;
+      state.username = username;
     },
     signOut: (state) => {
       (state.token = ""), (state.userId = ""), (state.isAuth = false);

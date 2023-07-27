@@ -31,6 +31,7 @@ interface responseData {
   token: string;
   userId: string;
   error: boolean;
+  username: string;
   expirationDate: string;
 
   email: string;
@@ -133,6 +134,7 @@ const LoginModal = (props: IProps) => {
       localStorage.setItem("userId", data.userId);
       localStorage.setItem("email", data.email);
       localStorage.setItem("expDate", data.expirationDate);
+      localStorage.setItem("username", data.username);
 
       setTimeout(() => {
         dispatch(signOut());

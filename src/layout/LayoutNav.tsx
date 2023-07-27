@@ -9,6 +9,7 @@ import SignUpModal from "./SignUpModal";
 import MobileSearchModal from "./MobileSearchModal";
 import { useAppSelector } from "../hooks";
 import { Link as RouterLink } from "react-router-dom";
+import ChatModal from "../components/chat/ChatModal";
 
 const LayoutNav = () => {
   const [loginModal, setLoginModal] = useState(false);
@@ -16,6 +17,7 @@ const LayoutNav = () => {
   const [isMobileNav, setIsMobileNav] = useState(false);
   const [signUpModal, setSignUpModal] = useState(false);
   const [mobileSearch, setMobileSearch] = useState(false);
+  const [chatModal, setChatModal] = useState(false);
 
   const isAuth = useAppSelector((state) => state.auth.isAuth);
   const userId = useAppSelector((state) => state.auth.userId);
@@ -87,6 +89,17 @@ const LayoutNav = () => {
           Login
         </Button>
 
+        <Button
+          size={"xs"}
+          colorScheme="twitter"
+          onClick={() => {
+            setChatModal(true);
+          }}
+          hidden={!isAuth}
+        >
+          Chat
+        </Button>
+
         {isAuth && (
           <Link as={RouterLink} to={`/userAdminPage/${userId}`}>
             <IconButton
@@ -142,6 +155,12 @@ const LayoutNav = () => {
       />
       <SignUpModal isOpen={signUpModal} onClose={hideSignUpModalHandler} />
       <MobileSearchModal isOpen={mobileSearch} onClose={hideMobileSearch} />
+      <ChatModal
+        isOpen={chatModal}
+        onClose={() => {
+          setChatModal(false);
+        }}
+      />
     </>
   );
 };

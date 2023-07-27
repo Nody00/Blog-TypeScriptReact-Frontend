@@ -36,9 +36,11 @@ interface responseData {
 const SignUpModal = (props: IProps) => {
   const [passwordShow, setPasswordShow] = useState(false);
   const [emailValue, setEmailValue] = useState("");
+  const [usernameValue, setUsernameValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const [passwordEqualValue, setPasswordEqualValue] = useState("");
   const [emailError, setEmailError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [passwordEqualError, setPasswordEqualError] = useState(false);
 
@@ -69,6 +71,22 @@ const SignUpModal = (props: IProps) => {
     }
 
     setEmailValue(email);
+  }
+
+  function validateUsername(e: { target: HTMLInputElement }) {
+    const username = e.target.value;
+    setUsernameError(false);
+    setErrorState({
+      error: false,
+      errorMessage: "",
+    });
+
+    if (username.length > 10) {
+      setUsernameError(true);
+      return;
+    }
+
+    setUsernameValue(username);
   }
 
   function validatePassword(e: { target: HTMLInputElement }) {
@@ -105,7 +123,7 @@ const SignUpModal = (props: IProps) => {
 
   async function submitHandler() {
     setIsLoading(true);
-    if (emailError || passwordError || passwordEqualError) {
+    if (emailError || passwordError || passwordEqualError || usernameError) {
       return;
     }
 
@@ -124,6 +142,7 @@ const SignUpModal = (props: IProps) => {
           body: JSON.stringify({
             email: emailValue,
             password: passwordValue,
+            username: usernameValue,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -185,6 +204,18 @@ const SignUpModal = (props: IProps) => {
               <FormErrorMessage>
                 Valid format example@gmail.com
               </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={usernameError} mt={4} mb={4}>
+              <FormLabel>Username</FormLabel>
+              <Input
+                placeholder="myusername"
+                isRequired
+                onChange={validateUsername}
+                errorBorderColor="red.500"
+                bgColor={usernameError ? "red.100" : "#fff"}
+              />
+              <FormErrorMessage>Max 10 characters</FormErrorMessage>
             </FormControl>
 
             <FormControl mt={4} mb={4} isInvalid={passwordError}>
