@@ -6,7 +6,7 @@ const SentMessage = (props: { text: string }) => {
         p={2}
         bgColor={"#1c7ed6"}
         color="#fff"
-        w={"fit-content"}
+        w={"100%"}
         borderRadius={"9px"}
       >
         {props.text}

@@ -13,10 +13,18 @@ import { createSlice } from "@reduxjs/toolkit";
 //   chatData: IChat;
 // }
 
-const initialState = {
+const initialState: {
+  chatMode: boolean;
+  chatList: any[];
+  chatData: any;
+  messages: any;
+  userList: any[];
+} = {
   chatMode: false,
   chatList: [],
   chatData: {},
+  messages: [],
+  userList: [],
 };
 
 export const chatSlice = createSlice({
@@ -30,25 +38,40 @@ export const chatSlice = createSlice({
       state.chatMode = false;
     },
     initilizeChatList: (state, action: { payload: { result: [] } }) => {
-      // console.log(action.payload.result);
       state.chatList = [...action.payload.result];
     },
     initilizeChatData: (state, action: { payload: { result: {} } }) => {
-      console.log(action.payload.result);
       state.chatData = action.payload.result;
     },
-    addMessage: (state, action: { payload: { messageData: object } }) => {
+    initilizeMessages: (state, action: { payload: any }) => {
+      state.messages = [...action.payload];
+    },
+    addMessage: (state, action: { payload: any }) => {
       console.log(action.payload);
+
+      // check if message already exists in chat if so dont add it
+      const existingMessageIndex = state.messages.findIndex(
+        (e) => e._id === action.payload._id
+      );
+
+      if (existingMessageIndex !== -1) {
+        return;
+      }
+
       // god typescript is being mean here
-      state.chatData.messages.push(action.payload);
+      state.messages.push(action.payload);
     },
     removeMessage: (state, action: { payload: { messageId: string } }) => {
       // delete message
     },
+    initializeUsersList: (state, action: { payload: any }) => {
+      // console.log(action.payload);
+      state.userList = [...action.payload];
+    },
   },
 });
 
-export function getChatData(userId, token) {
+export function getChatData(userId: string, token: string) {
   return async (dispatch) => {
     try {
       const result = await fetch("http://localhost:8080/chat/getAllChats", {
@@ -84,8 +107,29 @@ export function getChatInfo(chatId: string, token: string) {
 
       const data = await result.json();
 
+      // console.log("From thunk", data.result.messages);
+
       dispatch(initilizeChatData(data));
+      dispatch(initilizeMessages(data.result.messages));
       dispatch(chatModeOn());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getUsersList(token: string) {
+  return async (dispatch) => {
+    try {
+      const result = await fetch("http://localhost:8080/chat/usersAll", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      const data = await result.json();
+      dispatch(initializeUsersList(data));
     } catch (error) {
       console.log(error);
     }
@@ -99,6 +143,8 @@ export const {
   removeMessage,
   initilizeChatList,
   initilizeChatData,
+  initilizeMessages,
+  initializeUsersList,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

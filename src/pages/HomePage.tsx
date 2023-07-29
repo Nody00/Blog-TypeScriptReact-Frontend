@@ -6,6 +6,7 @@ import PostForm from "../components/Posts/PostForm";
 import { useLoaderData, defer, Await } from "react-router-dom";
 import PostList from "../components/Posts/PostList";
 import { useState, Suspense } from "react";
+import NewChatMenu from "../components/chat/NewChatMenu";
 
 interface IPost {
   title: string;
@@ -33,6 +34,7 @@ interface ILoaderData {
 
 const HomePage = () => {
   const [addPostMode, setAddPostMode] = useState(false);
+  const [newChatMode, setNewChatMode] = useState(false);
   const postData = useLoaderData() as ILoaderData;
 
   function toggleAddPostMode() {
@@ -66,9 +68,29 @@ const HomePage = () => {
           Add post
         </Button>
       )}
+      {!newChatMode && (
+        <Button
+          colorScheme="green"
+          variant={"solid"}
+          onClick={() => {
+            setNewChatMode(true);
+          }}
+          mb={5}
+        >
+          New chat
+        </Button>
+      )}
 
       <ScaleFade initialScale={0.9} in={addPostMode} unmountOnExit={true}>
         <PostForm />
+      </ScaleFade>
+
+      <ScaleFade initialScale={0.9} in={newChatMode} unmountOnExit={true}>
+        <NewChatMenu
+          onClose={() => {
+            setNewChatMode(false);
+          }}
+        />
       </ScaleFade>
 
       <Suspense fallback={<LoadingSkeleton />}>

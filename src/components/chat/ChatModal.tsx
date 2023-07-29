@@ -11,6 +11,7 @@ import {
   Grid,
   InputGroup,
   InputLeftElement,
+  Hide,
 } from "@chakra-ui/react";
 import { AiOutlineSearch } from "react-icons/ai";
 import ChatItemList from "./ChatItemList";
@@ -43,8 +44,10 @@ const ChatModal = (props: { isOpen: boolean; onClose: () => void }) => {
             </InputGroup>
           )}
 
-          <Grid gridTemplateColumns={"30fr 70fr"}>
-            <ChatItemList />
+          <Grid gridTemplateColumns={{ base: "1fr", lg: "30fr 70fr" }}>
+            <Hide below="lg">
+              <ChatItemList />
+            </Hide>
             <Chat />
           </Grid>
 

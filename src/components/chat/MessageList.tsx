@@ -1,11 +1,16 @@
-import { List } from "@chakra-ui/react";
+import { List, Box } from "@chakra-ui/react";
 import ReceivedMessage from "./ReceivedMessage";
 import SentMessage from "./SentMessage";
 import { useAppSelector } from "../../hooks";
+import { useRef, useEffect } from "react";
 const MessageList = (props: { messageData: [] }) => {
   const userId = useAppSelector((state) => state.auth.userId);
+  const scrollRef: any = useRef();
 
-  console.log(props.messageData);
+  useEffect(() => {
+    scrollRef.current.scrollIntoView({ behaviour: "smooth" });
+  }, [props.messageData]);
+
   return (
     <List
       display={"flex"}
@@ -26,6 +31,7 @@ const MessageList = (props: { messageData: [] }) => {
       })}
       {/* <ReceivedMessage text={"DUDE THE PARTY WAS AWESOME LAST NIGHT"} />
       <SentMessage text={"I know it was toats awesome"} /> */}
+      <Box ref={scrollRef}></Box>
     </List>
   );
 };

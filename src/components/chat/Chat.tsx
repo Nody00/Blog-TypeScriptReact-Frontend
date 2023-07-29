@@ -6,6 +6,7 @@ import { useAppSelector } from "../../hooks";
 
 const Chat = () => {
   const chatData: any = useAppSelector((state) => state.chat.chatData);
+  const messages: any = useAppSelector((state) => state.chat.messages);
   const chatMode = useAppSelector((state) => state.chat.chatMode);
   const userId = useAppSelector((state) => state.auth.userId);
   const token = useAppSelector((state) => state.auth.token);
@@ -23,8 +24,6 @@ const Chat = () => {
       </Flex>
     );
   }
-
-  console.log(chatData);
 
   return (
     <Flex
@@ -54,7 +53,7 @@ const Chat = () => {
       </Flex>
 
       <Box w={"100%"} h={"100%"} borderRadius={"9px"} p={2} mt={2}>
-        <MessageList messageData={chatData.messages} />
+        <MessageList messageData={messages} />
       </Box>
 
       <MessageInput chatId={chatData._id} userId={userId} token={token} />

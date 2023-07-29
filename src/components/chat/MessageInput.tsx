@@ -3,6 +3,8 @@ import { IoAddCircle, IoMic } from "react-icons/io5";
 import { useRef } from "react";
 import { useAppDispatch } from "../../hooks";
 import { addMessage } from "../../slices/chatSlice";
+import { io } from "socket.io-client";
+
 const MessageInput = (props: {
   chatId: string;
   userId: string;
@@ -10,6 +12,16 @@ const MessageInput = (props: {
 }) => {
   const dispatch = useAppDispatch();
   const inputRef: any = useRef();
+  const socket = io(
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+  );
+
+  socket.on("chat", (data: any) => {
+    if (data.action === "newMessage") {
+      console.log(data);
+      dispatch(addMessage(data.message));
+    }
+  });
 
   async function submitHandler() {
     const message = inputRef.current.value;
@@ -28,9 +40,7 @@ const MessageInput = (props: {
         },
       });
 
-      const data = await result.json();
-
-      dispatch(addMessage(data.result));
+      // const data = await result.json();
     } catch (error) {
       console.log(error);
     }
