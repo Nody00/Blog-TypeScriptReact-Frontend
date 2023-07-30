@@ -1,8 +1,20 @@
-import { Box, Flex, Text, Icon, Avatar, AvatarGroup } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Icon,
+  Avatar,
+  AvatarGroup,
+  Hide,
+  Button,
+  Show,
+} from "@chakra-ui/react";
 import { IoCallSharp, IoVideocam, IoMenu, IoChatbox } from "react-icons/io5";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 import { useAppSelector } from "../../hooks";
+import { useState } from "react";
+import ChatListMobileDrawer from "./ChatListMobileDrawer";
 
 const Chat = () => {
   const chatData: any = useAppSelector((state) => state.chat.chatData);
@@ -10,6 +22,7 @@ const Chat = () => {
   const chatMode = useAppSelector((state) => state.chat.chatMode);
   const userId = useAppSelector((state) => state.auth.userId);
   const token = useAppSelector((state) => state.auth.token);
+  const [mobileDrawer, setMobileDrawer] = useState(false);
 
   if (!chatMode) {
     return (
@@ -31,6 +44,8 @@ const Chat = () => {
       alignItems={"flex-start"}
       justifyContent={"space-between"}
       ml={5}
+      // bgColor={"blue"}
+      w={{ base: "100%", lg: "70%" }}
     >
       <Flex alignItems={"center"} justifyContent={"space-between"} w={"100%"}>
         <Flex alignItems={"center"} justifyContent={"center"} gap={2}>
@@ -46,9 +61,24 @@ const Chat = () => {
         </Flex>
 
         <Flex alignItems={"center"} justifyContent={"center"} gap={6}>
-          <Icon as={IoCallSharp} h={6} w={6} cursor={"pointer"} />
-          <Icon as={IoVideocam} h={6} w={6} cursor={"pointer"} />
-          <Icon as={IoMenu} h={6} w={6} cursor={"pointer"} />
+          {/* button to toggle userList */}
+
+          <Button
+            colorScheme="green"
+            display={{ base: "block", lg: "none" }}
+            size={"sm"}
+            onClick={() => {
+              setMobileDrawer(true);
+            }}
+          >
+            User List
+          </Button>
+
+          <Show above="sm">
+            <Icon as={IoCallSharp} h={6} w={6} cursor={"pointer"} />
+            <Icon as={IoVideocam} h={6} w={6} cursor={"pointer"} />
+            <Icon as={IoMenu} h={6} w={6} cursor={"pointer"} />
+          </Show>
         </Flex>
       </Flex>
 
@@ -57,6 +87,13 @@ const Chat = () => {
       </Box>
 
       <MessageInput chatId={chatData._id} userId={userId} token={token} />
+
+      <ChatListMobileDrawer
+        isOpen={mobileDrawer}
+        onClose={() => {
+          setMobileDrawer(false);
+        }}
+      />
     </Flex>
   );
 };

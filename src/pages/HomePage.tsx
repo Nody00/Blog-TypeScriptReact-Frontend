@@ -1,6 +1,5 @@
 import HomePageHero from "../components/HomePageHero";
-import { Flex, Button, ScaleFade } from "@chakra-ui/react";
-
+import { Flex, Button, ScaleFade, Hide } from "@chakra-ui/react";
 import LoadingSkeleton from "../components/Posts/LoadingSkeleton";
 import PostForm from "../components/Posts/PostForm";
 import { useLoaderData, defer, Await } from "react-router-dom";
@@ -56,8 +55,9 @@ const HomePage = () => {
       pl={2}
       pb={"100rem"}
     >
-      <HomePageHero />
-
+      <Hide below="md">
+        <HomePageHero />
+      </Hide>
       {!addPostMode && (
         <Button
           colorScheme="green"

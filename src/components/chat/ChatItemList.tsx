@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { getChatData } from "../../slices/chatSlice";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 
-const ChatItemList = () => {
+const ChatItemList = (props: { isMobile: boolean }) => {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.auth.userId);
   const token = useAppSelector((state) => state.auth.token);
@@ -15,7 +15,7 @@ const ChatItemList = () => {
   }, []);
 
   return (
-    <List w={"100%"} h={"40rem"} overflowY={"scroll"}>
+    <List h={"40rem"} overflowY={"scroll"} w={props.isMobile ? "100%" : "30%"}>
       {chatList.map((e) => (
         <ListItem key={e._id}>
           <ChatItem partisipants={e.partisipantUsernames} _id={e._id} />

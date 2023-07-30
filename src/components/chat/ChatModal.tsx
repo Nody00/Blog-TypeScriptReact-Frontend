@@ -8,7 +8,7 @@ import {
   DrawerCloseButton,
   Input,
   Button,
-  Grid,
+  Flex,
   InputGroup,
   InputLeftElement,
   Hide,
@@ -44,14 +44,14 @@ const ChatModal = (props: { isOpen: boolean; onClose: () => void }) => {
             </InputGroup>
           )}
 
-          <Grid gridTemplateColumns={{ base: "1fr", lg: "30fr 70fr" }}>
+          <Flex alignItems={"center"} w={"100%"}>
             <Hide below="lg">
-              <ChatItemList />
+              <ChatItemList isMobile={false} />
             </Hide>
             <Chat />
-          </Grid>
 
-          {/* {isChat && <Chat />} */}
+            {/* mobile chat menu */}
+          </Flex>
         </DrawerBody>
 
         <DrawerFooter>
