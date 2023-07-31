@@ -15,6 +15,8 @@ import {
 import { FaUserLarge, FaRectangleXmark } from "react-icons/fa6";
 import { useAppSelector } from "../hooks";
 import { Link as RouterLink } from "react-router-dom";
+import ChatModal from "../components/chat/ChatModal";
+import { useState } from "react";
 
 interface IProps {
   isOpen: boolean;
@@ -27,7 +29,8 @@ interface IProps {
 const MobileNav = (props: IProps) => {
   const isAuth = useAppSelector((state) => state.auth.isAuth);
   const userId = useAppSelector((state) => state.auth.userId);
-  // const isAuth = true;
+  const [chatModal, setChatModal] = useState(false);
+
   return (
     <Drawer isOpen={props.isOpen} placement="right" onClose={props.onClose}>
       <DrawerOverlay />
@@ -78,11 +81,30 @@ const MobileNav = (props: IProps) => {
                 colorScheme="twitter"
               />
             </ListItem>
+            <ListItem>
+              <Button
+                size={"md"}
+                colorScheme="twitter"
+                onClick={() => {
+                  setChatModal(true);
+                }}
+                hidden={!isAuth}
+              >
+                Chat
+              </Button>
+            </ListItem>
           </List>
         </DrawerBody>
 
         <DrawerFooter></DrawerFooter>
       </DrawerContent>
+
+      <ChatModal
+        isOpen={chatModal}
+        onClose={() => {
+          setChatModal(false);
+        }}
+      />
     </Drawer>
   );
 };
