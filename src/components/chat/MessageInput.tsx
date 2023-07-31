@@ -1,4 +1,4 @@
-import { Button, Flex, Box, Icon, Input } from "@chakra-ui/react";
+import { Button, Flex, Icon, Input } from "@chakra-ui/react";
 import { IoAddCircle, IoMic } from "react-icons/io5";
 import { useRef } from "react";
 import { useAppDispatch } from "../../hooks";
@@ -27,18 +27,23 @@ const MessageInput = (props: {
     const message = inputRef.current.value;
 
     try {
-      const result = await fetch("http://localhost:8080/chat/newMessage", {
-        method: "POST",
-        body: JSON.stringify({
-          chatId: props.chatId,
-          userId: props.userId,
-          message: message,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + props.token,
-        },
-      });
+      await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/chat/newMessage`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            chatId: props.chatId,
+            userId: props.userId,
+            message: message,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + props.token,
+          },
+        }
+      );
 
       // const data = await result.json();
     } catch (error) {

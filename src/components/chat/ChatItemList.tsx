@@ -1,4 +1,4 @@
-import { List, ListItem, Divider, Text } from "@chakra-ui/react";
+import { List, ListItem, Text } from "@chakra-ui/react";
 import ChatItem from "./ChatItem";
 import { useEffect } from "react";
 import { getChatData } from "../../slices/chatSlice";

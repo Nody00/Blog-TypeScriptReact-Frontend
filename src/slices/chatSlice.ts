@@ -61,9 +61,9 @@ export const chatSlice = createSlice({
       // god typescript is being mean here
       state.messages.push(action.payload);
     },
-    removeMessage: (state, action: { payload: { messageId: string } }) => {
-      // delete message
-    },
+    // removeMessage: (state, action: { payload: { messageId: string } }) => {
+    //   // delete message
+    // },
     initializeUsersList: (state, action: { payload: any }) => {
       // console.log(action.payload);
       state.userList = [...action.payload];
@@ -74,14 +74,19 @@ export const chatSlice = createSlice({
 export function getChatData(userId: string, token: string) {
   return async (dispatch) => {
     try {
-      const result = await fetch("http://localhost:8080/chat/getAllChats", {
-        method: "POST",
-        body: JSON.stringify({ userId: userId }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const result = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/chat/getAllChats`,
+        {
+          method: "POST",
+          body: JSON.stringify({ userId: userId }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
 
       const data = await result.json();
 
@@ -96,7 +101,9 @@ export function getChatInfo(chatId: string, token: string) {
   return async (dispatch) => {
     try {
       const result = await fetch(
-        "http://localhost:8080/chat/getChat/" + chatId,
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/chat/getChat/` + chatId,
         {
           method: "POST",
           headers: {
@@ -121,12 +128,17 @@ export function getChatInfo(chatId: string, token: string) {
 export function getUsersList(token: string) {
   return async (dispatch) => {
     try {
-      const result = await fetch("http://localhost:8080/chat/usersAll", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      });
+      const result = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/chat/usersAll`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
 
       const data = await result.json();
       dispatch(initializeUsersList(data));
@@ -140,7 +152,7 @@ export const {
   chatModeOn,
   chatModeOff,
   addMessage,
-  removeMessage,
+  // removeMessage,
   initilizeChatList,
   initilizeChatData,
   initilizeMessages,

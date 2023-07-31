@@ -24,17 +24,22 @@ const NewChatMenu = (props: { onClose: () => void }) => {
 
   async function newChatHandler(userEmail: string) {
     try {
-      const result = await fetch("http://localhost:8080/chat/newChat", {
-        method: "POST",
-        body: JSON.stringify({
-          userEmail1: email,
-          userEmail2: userEmail,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const result = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:8080"
+        }/chat/newChat`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            userEmail1: email,
+            userEmail2: userEmail,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
 
       const data = await result.json();
 
