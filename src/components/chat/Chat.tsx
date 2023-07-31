@@ -5,7 +5,6 @@ import {
   Icon,
   Avatar,
   AvatarGroup,
-  Hide,
   Button,
   Show,
 } from "@chakra-ui/react";

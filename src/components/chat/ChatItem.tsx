@@ -1,6 +1,6 @@
 import { Flex, Box, Text, Avatar, AvatarGroup } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { getChatInfo, chatModeOn } from "../../slices/chatSlice";
+import { getChatInfo } from "../../slices/chatSlice";
 interface IProps {
   partisipants: string[];
   _id: string;

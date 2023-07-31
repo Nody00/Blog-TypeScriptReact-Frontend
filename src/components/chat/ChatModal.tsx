@@ -19,7 +19,7 @@ import Chat from "./Chat";
 import { useState } from "react";
 
 const ChatModal = (props: { isOpen: boolean; onClose: () => void }) => {
-  const [isChat, setIsChat] = useState(false);
+  const [isChat] = useState(false);
 
   return (
     <Drawer
