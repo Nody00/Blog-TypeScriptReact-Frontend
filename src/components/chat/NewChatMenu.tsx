@@ -47,7 +47,12 @@ const NewChatMenu = (props: { onClose: () => void }) => {
         throw data.errorObject;
       }
 
-      console.log(data);
+      toast({
+        title: "Chat created!",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
     } catch (error) {
       toast({
         title: "Error",
@@ -63,7 +68,7 @@ const NewChatMenu = (props: { onClose: () => void }) => {
     dispatch(getUsersList(token));
   }, []);
   return (
-    <Card maxWidth={"lg"} minW={{ base: "auto", md: "md" }} mb={5}>
+    <Card maxWidth={"lg"} minW={{ base: "auto", md: "lg" }} mb={5}>
       <CardHeader>
         <Flex gap="3">
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
