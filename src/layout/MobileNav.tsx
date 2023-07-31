@@ -32,80 +32,82 @@ const MobileNav = (props: IProps) => {
   const [chatModal, setChatModal] = useState(false);
 
   return (
-    <Drawer isOpen={props.isOpen} placement="right" onClose={props.onClose}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader></DrawerHeader>
+    <>
+      <Drawer isOpen={props.isOpen} placement="right" onClose={props.onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader></DrawerHeader>
 
-        <DrawerBody>
-          <List
-            display={"flex"}
-            flexDirection={"column"}
-            alignItems={"center"}
-            justifyContent={"flex-start"}
-            h={"100%"}
-            gap={"1rem"}
-            overflowY={"scroll"}
-          >
-            <ListItem onClick={props.openSignUp}>
-              <Button size={"md"} colorScheme="twitter" hidden={isAuth}>
-                Sign Up
-              </Button>
-            </ListItem>
-            <ListItem onClick={props.openLogin}>
-              <Button size={"md"} colorScheme="twitter" hidden={isAuth}>
-                Login
-              </Button>
-            </ListItem>
-            <ListItem hidden={!isAuth}>
-              <Link as={RouterLink} to={`/userAdminPage/${userId}`}>
+          <DrawerBody>
+            <List
+              display={"flex"}
+              flexDirection={"column"}
+              alignItems={"center"}
+              justifyContent={"flex-start"}
+              h={"100%"}
+              gap={"1rem"}
+              overflowY={"scroll"}
+            >
+              <ListItem onClick={props.openSignUp}>
+                <Button size={"md"} colorScheme="twitter" hidden={isAuth}>
+                  Sign Up
+                </Button>
+              </ListItem>
+              <ListItem onClick={props.openLogin}>
+                <Button size={"md"} colorScheme="twitter" hidden={isAuth}>
+                  Login
+                </Button>
+              </ListItem>
+              <ListItem hidden={!isAuth}>
+                <Link as={RouterLink} to={`/userAdminPage/${userId}`}>
+                  <IconButton
+                    aria-label="Account settings"
+                    icon={<FaUserLarge />}
+                    size={"md"}
+                    colorScheme="twitter"
+                  />
+                </Link>
+              </ListItem>
+              <ListItem onClick={props.openLogout} hidden={!isAuth}>
+                <Button size={"md"} colorScheme="twitter">
+                  Logout
+                </Button>
+              </ListItem>
+              <ListItem onClick={props.onClose}>
                 <IconButton
                   aria-label="Account settings"
-                  icon={<FaUserLarge />}
+                  icon={<FaRectangleXmark />}
                   size={"md"}
                   colorScheme="twitter"
                 />
-              </Link>
-            </ListItem>
-            <ListItem onClick={props.openLogout} hidden={!isAuth}>
-              <Button size={"md"} colorScheme="twitter">
-                Logout
-              </Button>
-            </ListItem>
-            <ListItem onClick={props.onClose}>
-              <IconButton
-                aria-label="Account settings"
-                icon={<FaRectangleXmark />}
-                size={"md"}
-                colorScheme="twitter"
-              />
-            </ListItem>
-            <ListItem>
-              <Button
-                size={"md"}
-                colorScheme="twitter"
-                onClick={() => {
-                  setChatModal(true);
-                }}
-                hidden={!isAuth}
-              >
-                Chat
-              </Button>
-            </ListItem>
-          </List>
-        </DrawerBody>
+              </ListItem>
+              <ListItem>
+                <Button
+                  size={"md"}
+                  colorScheme="twitter"
+                  onClick={() => {
+                    setChatModal(true);
+                    props.onClose();
+                  }}
+                  hidden={!isAuth}
+                >
+                  Chat
+                </Button>
+              </ListItem>
+            </List>
+          </DrawerBody>
 
-        <DrawerFooter></DrawerFooter>
-      </DrawerContent>
-
+          <DrawerFooter></DrawerFooter>
+        </DrawerContent>
+      </Drawer>
       <ChatModal
         isOpen={chatModal}
         onClose={() => {
           setChatModal(false);
         }}
       />
-    </Drawer>
+    </>
   );
 };
 

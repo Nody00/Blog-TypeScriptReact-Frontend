@@ -27,6 +27,7 @@ const ChatModal = (props: { isOpen: boolean; onClose: () => void }) => {
       placement="right"
       onClose={props.onClose}
       size={"full"}
+      isFullHeight={true}
     >
       <DrawerOverlay />
       <DrawerContent>
@@ -54,7 +55,7 @@ const ChatModal = (props: { isOpen: boolean; onClose: () => void }) => {
             </Button>
           </Flex>
 
-          <Flex alignItems={"center"} w={"100%"}>
+          <Flex alignItems={"center"} w={"100%"} mb={250}>
             <Hide below="lg">
               <ChatItemList isMobile={false} />
             </Hide>
