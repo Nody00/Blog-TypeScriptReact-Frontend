@@ -21,12 +21,7 @@ const Chat = () => {
 
   if (!chatMode) {
     return (
-      <Flex
-        alignItems={"center"}
-        justifyContent={"center"}
-        direction={"column"}
-        mt={40}
-      >
+      <Flex alignItems={"center"} justifyContent={"center"}>
         <Text fontWeight={600}>Start chatting with your friends!</Text>
         <Icon as={IoChatbox} h={10} w={10} />
       </Flex>

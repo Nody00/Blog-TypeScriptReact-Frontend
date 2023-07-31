@@ -6,14 +6,14 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  Input,
+  // Input,
   Button,
   Flex,
-  InputGroup,
-  InputLeftElement,
+  // InputGroup,
+  // InputLeftElement,
   Hide,
 } from "@chakra-ui/react";
-import { AiOutlineSearch } from "react-icons/ai";
+// import { AiOutlineSearch } from "react-icons/ai";
 import ChatItemList from "./ChatItemList";
 import Chat from "./Chat";
 import { useState } from "react";
@@ -34,14 +34,13 @@ const ChatModal = (props: { isOpen: boolean; onClose: () => void }) => {
         <DrawerHeader>Messages</DrawerHeader>
 
         <DrawerBody>
-          <Flex alignItems={"center"} justifyContent={"space-between"}>
-            <InputGroup mb={5}>
+          <Flex alignItems={"center"} justifyContent={"center"}>
+            {/* <InputGroup mb={5}>
               <InputLeftElement pointerEvents="none">
                 <AiOutlineSearch w={8} h={8} />
               </InputLeftElement>
-
-              <Input placeholder="Search users" />
-            </InputGroup>
+              <Input placeholder="Search users" size={"sm"} />
+            </InputGroup> */}
 
             <Button
               colorScheme="green"
@@ -60,8 +59,6 @@ const ChatModal = (props: { isOpen: boolean; onClose: () => void }) => {
               <ChatItemList isMobile={false} />
             </Hide>
             <Chat />
-
-            {/* mobile chat menu */}
           </Flex>
         </DrawerBody>
 
