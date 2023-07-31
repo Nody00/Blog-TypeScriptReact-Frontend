@@ -17,10 +17,10 @@ import { AiOutlineSearch } from "react-icons/ai";
 import ChatItemList from "./ChatItemList";
 import Chat from "./Chat";
 import { useState } from "react";
+import ChatListMobileDrawer from "./ChatListMobileDrawer";
 
 const ChatModal = (props: { isOpen: boolean; onClose: () => void }) => {
-  const [isChat] = useState(false);
-
+  const [mobileDrawer, setMobileDrawer] = useState(false);
   return (
     <Drawer
       isOpen={props.isOpen}
@@ -31,10 +31,10 @@ const ChatModal = (props: { isOpen: boolean; onClose: () => void }) => {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>{isChat ? "" : "Messages"}</DrawerHeader>
+        <DrawerHeader>Messages</DrawerHeader>
 
         <DrawerBody>
-          {!isChat && (
+          <Flex alignItems={"center"} justifyContent={"space-between"}>
             <InputGroup mb={5}>
               <InputLeftElement pointerEvents="none">
                 <AiOutlineSearch w={8} h={8} />
@@ -42,7 +42,18 @@ const ChatModal = (props: { isOpen: boolean; onClose: () => void }) => {
 
               <Input placeholder="Search users" />
             </InputGroup>
-          )}
+
+            <Button
+              colorScheme="green"
+              display={{ base: "block", lg: "none" }}
+              size={"sm"}
+              onClick={() => {
+                setMobileDrawer(true);
+              }}
+            >
+              User List
+            </Button>
+          </Flex>
 
           <Flex alignItems={"center"} w={"100%"}>
             <Hide below="lg">
@@ -60,6 +71,13 @@ const ChatModal = (props: { isOpen: boolean; onClose: () => void }) => {
           </Button>
         </DrawerFooter>
       </DrawerContent>
+
+      <ChatListMobileDrawer
+        isOpen={mobileDrawer}
+        onClose={() => {
+          setMobileDrawer(false);
+        }}
+      />
     </Drawer>
   );
 };

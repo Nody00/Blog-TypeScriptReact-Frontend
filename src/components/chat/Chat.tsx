@@ -5,15 +5,12 @@ import {
   Icon,
   Avatar,
   AvatarGroup,
-  Button,
   Show,
 } from "@chakra-ui/react";
 import { IoCallSharp, IoVideocam, IoMenu, IoChatbox } from "react-icons/io5";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 import { useAppSelector } from "../../hooks";
-import { useState } from "react";
-import ChatListMobileDrawer from "./ChatListMobileDrawer";
 
 const Chat = () => {
   const chatData: any = useAppSelector((state) => state.chat.chatData);
@@ -21,13 +18,12 @@ const Chat = () => {
   const chatMode = useAppSelector((state) => state.chat.chatMode);
   const userId = useAppSelector((state) => state.auth.userId);
   const token = useAppSelector((state) => state.auth.token);
-  const [mobileDrawer, setMobileDrawer] = useState(false);
 
   if (!chatMode) {
     return (
       <Flex
         alignItems={"center"}
-        justifyContent={"flex-start"}
+        justifyContent={"center"}
         direction={"column"}
         mt={40}
       >
@@ -62,17 +58,6 @@ const Chat = () => {
         <Flex alignItems={"center"} justifyContent={"center"} gap={6}>
           {/* button to toggle userList */}
 
-          <Button
-            colorScheme="green"
-            display={{ base: "block", lg: "none" }}
-            size={"sm"}
-            onClick={() => {
-              setMobileDrawer(true);
-            }}
-          >
-            User List
-          </Button>
-
           <Show above="sm">
             <Icon as={IoCallSharp} h={6} w={6} cursor={"pointer"} />
             <Icon as={IoVideocam} h={6} w={6} cursor={"pointer"} />
@@ -86,13 +71,6 @@ const Chat = () => {
       </Box>
 
       <MessageInput chatId={chatData._id} userId={userId} token={token} />
-
-      <ChatListMobileDrawer
-        isOpen={mobileDrawer}
-        onClose={() => {
-          setMobileDrawer(false);
-        }}
-      />
     </Flex>
   );
 };
